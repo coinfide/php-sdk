@@ -38,7 +38,7 @@ class Client
         if ($mode == 'demo') {
             $this->endpoint = 'http://demo-api.enauda.com/paymentapi/';
         } elseif ($mode == 'prod') {
-            $this->endpoint = 'https://paymentapi.enauda.com/paymentapi/';
+            $this->endpoint = 'https://paymentapi.coinfide.com/paymentapi/';
         } else {
             throw new CoinfideException(sprintf('Client mode "%s" unknown', $mode));
         }
