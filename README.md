@@ -2,7 +2,7 @@
 
 ## Installation 
 
-Require it with Composer TODO COMPOSER URL HERE
+Require it with Composer ```composer require confide/php-sdk dev-master```.
 
 ## Examples
 
@@ -13,4 +13,4 @@ Copy ```.env.example``` to ```.env``` and run the tests or examples. Two example
 
 ## Further reading
 
-TODO Link to coinfide.com documentation
+Read full documentation in the [wiki](https://github.com/coinfide/documentation/wiki)
