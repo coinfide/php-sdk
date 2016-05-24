@@ -33,6 +33,16 @@ class Client
      */
     protected $tokenFetchTime;
 
+    /**
+     * @var array
+     */
+    protected $sslOptions;
+
+    public function __construct($sslOptions = [])
+    {
+        $this->sslOptions = $sslOptions;
+    }
+
     public function setMode($mode)
     {
         if ($mode == 'demo') {
@@ -114,6 +124,8 @@ class Client
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+
+        curl_setopt_array($curl, $this->sslOptions);
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(sprintf('Authorization: Basic %s', $token), 'Content-Type: application/json'));
 
