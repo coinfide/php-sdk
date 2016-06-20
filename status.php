@@ -22,7 +22,7 @@ if ($_ENV['COINFIDE_USER'] == 'yourapiusername') {
  * Configure this values in your Dashboard,
  * Profile - Business details - API username and API secret key
  */
-$client = new Client();
+$client = new Client(array('trace' => true));
 $client->setMode($_ENV['COINFIDE_MODE']);
 $client->setCredentials($_ENV['COINFIDE_USER'], $_ENV['COINFIDE_PASSWORD']);
 
@@ -35,6 +35,7 @@ $order = new Order();
 $seller = new Account();
 //important!! change this to your actual e-mail, or the example will not work
 $seller->setEmail('seller@coinfide.com');
+
 
 $order->setSeller($seller);
 
@@ -56,13 +57,13 @@ $order->addOrderItem($orderItem);
 $order->validate();
 
 /**
- * Submit order and refund
+ * submit order and cancel
  */
 $wrappedOrder = $client->submitOrder($order);
 
-$newOrder = $client->refund($wrappedOrder->getOrderId(), 10);
+$orderList = $client->orderStatus($wrappedOrder->getOrder()->getUid(), 'CA');
 
-?><strong>Order state after refund:</strong>
+?><strong>Cancelled order status</strong>
 <pre>
-<?php print_r($newOrder->toArray()) ?>
+<?php print_r($orderList->toArray()) ?>
 <pre>

@@ -2,12 +2,17 @@
 
 namespace Coinfide\Entity;
 
+use Coinfide\CoinfideException;
+
 class Phone extends Base
 {
     protected $validationRules = array(
-        'countryCode' => array('type' => 'string', 'max_length' => 3, 'required' => true),
-        'number' => array('type' => 'string', 'max_length' => 25, 'required' => true)
+        'countryCode' => array('type' => 'string', 'required' => false),
+        'number' => array('type' => 'string', 'required' => false),
+        'fullNumber' => array('type' => 'string', 'required' => false)
     );
+
+
 
     /**
      * @var string
@@ -18,6 +23,36 @@ class Phone extends Base
      * @var string
      */
     protected $number;
+
+    /**
+     * @var string
+     */
+    protected $fullNumber;
+
+    public function validate()
+    {
+        parent::validate();
+
+        if (!($this->fullNumber || ($this->number && $this->countryCode))) {
+            throw new CoinfideException(sprintf('Please set either fullNumber or number AND countryCode for Phone object'));
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullNumber()
+    {
+        return $this->fullNumber;
+    }
+
+    /**
+     * @param string $fullNumber
+     */
+    public function setFullNumber($fullNumber)
+    {
+        $this->fullNumber = $fullNumber;
+    }
 
     /**
      * @return string

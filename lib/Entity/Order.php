@@ -24,6 +24,7 @@ class Order extends Base
         'acceptPaymentsIfOrderExpired' => array('type' => 'boolean', 'required' => false),
         'taxBeforeDiscount' => array('type' => 'boolean', 'required' => false),
         'taxInclusive' => array('type' => 'boolean', 'required' => false),
+        'paymentPageUrl' => array('type' => 'string', 'required' => false),
         'successUrl' => array('type' => 'string', 'required' => false),
         'failUrl' => array('type' => 'string', 'required' => false),
         'orderItems' => array('type' => 'list', 'prototype' => array('type' => 'object', 'class' => '\Coinfide\Entity\OrderItem', 'required' => false), 'required' => true, 'min_items' => 1),
@@ -124,6 +125,11 @@ class Order extends Base
      * @var bool
      */
     protected $taxInclusive;
+
+    /**
+     * @var string
+     */
+    protected $paymentPageUrl;
 
     /**
      * @var string
@@ -447,6 +453,22 @@ class Order extends Base
     public function setTaxInclusive($taxInclusive)
     {
         $this->taxInclusive = $taxInclusive;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentPageUrl()
+    {
+        return $this->paymentPageUrl;
+    }
+
+    /**
+     * @param string $paymentPageUrl
+     */
+    public function setPaymentPageUrl($paymentPageUrl)
+    {
+        $this->paymentPageUrl = $paymentPageUrl;
     }
 
     /**

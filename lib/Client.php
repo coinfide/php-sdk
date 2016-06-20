@@ -3,6 +3,8 @@
 namespace Coinfide;
 
 use Coinfide\Entity\Order;
+use Coinfide\Entity\OrderList;
+use Coinfide\Entity\OrderStatus;
 use Coinfide\Entity\Token;
 use Coinfide\Entity\WrappedOrder;
 
@@ -36,11 +38,14 @@ class Client
     /**
      * @var array
      */
-    protected $sslOptions;
+    protected $options;
 
-    public function __construct($sslOptions = [])
+    public function __construct($options = array())
     {
-        $this->sslOptions = $sslOptions;
+        $this->options = array_merge(array(
+            'trace' => false,
+            'sslOptions' => array()
+        ), $options);
     }
 
     public function setMode($mode)
@@ -58,6 +63,72 @@ class Client
     {
         $this->username = $username;
         $this->password = $password;
+    }
+
+    public function orderStatus($uid, $status)
+    {
+        $token = $this->getToken();
+
+        $statuses = array('SE', 'DE', 'MP', 'CA');
+
+        if (!in_array($status, $statuses)) {
+            throw new \Exception(sprintf('New order status must be one of "%s"', $statuses));
+        }
+
+        $response = $this->request('order/status', array('uid' => $uid, 'status' => $status), $token->getAccessToken());
+
+        $orderList = new OrderStatus();
+
+        $orderList->fromArray($response);
+        $orderList->validate();
+
+        return $orderList;
+    }
+
+    public function orderDetailsByUid($uid)
+    {
+        $token = $this->getToken();
+
+        $params = array('uid' => $uid);
+
+        $response = $this->request('order/details', $params, $token->getAccessToken());
+
+        $orderList = new OrderList();
+
+        $orderList->fromArray($response);
+        $orderList->validate();
+
+        return $orderList;
+    }
+
+    public function orderDetailsByExternalOrderId($externalOrderId)
+    {
+        $token = $this->getToken();
+
+        $params = array('externalOrderId' => $externalOrderId);
+
+        $response = $this->request('order/details', $params, $token->getAccessToken());
+
+        $orderList = new OrderList();
+
+        $orderList->fromArray($response);
+        $orderList->validate();
+
+        return $orderList;
+    }
+
+    public function orderList($dateFrom, $dateTo)
+    {
+        $token = $this->getToken();
+
+        $response = $this->request('order/list', array('dateFrom'=> $dateFrom, 'dateTo' => $dateTo), $token->getAccessToken());
+
+        $orderList = new OrderList();
+
+        $orderList->fromArray($response);
+        $orderList->validate();
+
+        return $orderList;
     }
 
     public function getToken()
@@ -117,6 +188,13 @@ class Client
             throw new CoinfideException('No endpoint set, call "setMode" first');
         }
 
+        if ($this->options['trace']) {
+            print '--> DEBUG PATH '.$path.PHP_EOL;
+            print '--> DEBUG SENT JSON START'.PHP_EOL;
+            print json_encode($data, JSON_PRETTY_PRINT).PHP_EOL;
+            print '--> DEBUG SENT JSON END'.PHP_EOL;
+        }
+
         $curl = curl_init($this->endpoint . $path);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -125,7 +203,7 @@ class Client
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
 
-        curl_setopt_array($curl, $this->sslOptions);
+        curl_setopt_array($curl, $this->options['sslOptions']);
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(sprintf('Authorization: Basic %s', $token), 'Content-Type: application/json'));
 
@@ -137,10 +215,22 @@ class Client
             throw new CoinfideException(sprintf('CURL error %d: %s', $error, curl_error($curl)));
         }
 
+        if ($this->options['trace']) {
+            print '--> DEBUG RECEIVED RESULT START'.PHP_EOL;
+            print $result.PHP_EOL;
+            print '--> DEBUG RECEIVED RESULT END'.PHP_EOL;
+        }
+
         $decoded = json_decode($result, true);
         
-        if (!$decoded) {
+        if ($decoded === null) {
             throw new CoinfideException('Received JSON is not decodable');
+        }
+
+        if ($this->options['trace']) {
+            print '--> DEBUG RECEIVED JSON START'.PHP_EOL;
+            print json_encode($decoded, JSON_PRETTY_PRINT).PHP_EOL;
+            print '--> DEBUG RECEIVED JSON END'.PHP_EOL;
         }
 
         if (isset($decoded['errorData'])) {

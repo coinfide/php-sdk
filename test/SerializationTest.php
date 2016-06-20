@@ -148,6 +148,7 @@ class SerializationTest extends \PHPUnit_Framework_TestCase
         $order->setTaxBeforeDiscount(true);
         $order->setTaxInclusive(true);
         $order->setSuccessUrl('http://seller.success.url');
+        $order->setPaymentPageUrl('http://seller.payment.page.url');
         $order->setFailUrl('http://seller.fail.url');
         $order->setProvisionChannel('123456');
 

@@ -6,10 +6,11 @@ use Coinfide\Client;
 use Coinfide\Entity\Account;
 use Coinfide\Entity\Order;
 use Coinfide\Entity\OrderItem;
+use Coinfide\Entity\Phone;
 use Dotenv\Dotenv;
 
-require __DIR__ . '/vendor/autoload.php';
-$dotenv = new Dotenv(__DIR__);
+require __DIR__ . '/../../vendor/autoload.php';
+$dotenv = new Dotenv(__DIR__.'/../../');
 $dotenv->load();
 
 if ($_ENV['COINFIDE_USER'] == 'yourapiusername') {
@@ -22,24 +23,25 @@ if ($_ENV['COINFIDE_USER'] == 'yourapiusername') {
  * Configure this values in your Dashboard,
  * Profile - Business details - API username and API secret key
  */
-$client = new Client();
+$client = new Client(array('trace' => true));
 $client->setMode($_ENV['COINFIDE_MODE']);
 $client->setCredentials($_ENV['COINFIDE_USER'], $_ENV['COINFIDE_PASSWORD']);
 
-/*
- * Create order; this is a minimal amount of values needed to submit an order. For full example, consult order methods
- * or test/SerializationTest
- */
+/* test full phone */
 $order = new Order();
+
+$phone = new Phone();
+$phone->setFullNumber('37121234567');
 
 $seller = new Account();
 //important!! change this to your actual e-mail, or the example will not work
-$seller->setEmail('seller@coinfide.com');
+$seller->setEmail('andrew.tchircoff@gmail.com');
 
 $order->setSeller($seller);
 
 $buyer = new Account();
 $buyer->setEmail('buyer@coinfide.com');
+$buyer->setPhone($phone);
 
 $order->setBuyer($buyer);
 
@@ -56,13 +58,16 @@ $order->addOrderItem($orderItem);
 $order->validate();
 
 /**
- * Submit order and refund
+ * Submit order and redirect to payment form
  */
 $wrappedOrder = $client->submitOrder($order);
 
-$newOrder = $client->refund($wrappedOrder->getOrderId(), 10);
+/* test partial phone */
+$phone = new Phone();
+$phone->setCountryCode('371');
+$phone->setFullNumber('21234567');
 
-?><strong>Order state after refund:</strong>
-<pre>
-<?php print_r($newOrder->toArray()) ?>
-<pre>
+$order->getBuyer()->setPhone($phone);
+
+$client->submitOrder($order);
+

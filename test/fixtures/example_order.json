@@ -56,6 +56,7 @@
     "acceptPaymentsIfOrderExpired": true,
     "taxBeforeDiscount": true,
     "taxInclusive": true,
+    "paymentPageUrl": "http://seller.payment.page.url",
     "successUrl": "http://seller.success.url",
     "failUrl": "http://seller.fail.url",
     "orderItems": [{

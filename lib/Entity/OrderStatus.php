@@ -2,17 +2,12 @@
 
 namespace Coinfide\Entity;
 
-class WrappedOrder extends Base
+class OrderStatus extends Base
 {
     protected $validationRules = array(
         'order' => array('type' => 'object', 'class' => '\Coinfide\Entity\Order', 'required' => true),
-        'redirectUrl' => array('type' => 'string', 'required' => true)
+        'redirectUrl' => array('type' => 'string', 'required' => false)
     );
-
-    /**
-     * @var string
-     */
-    protected $orderId;
 
     /**
      * @var Order
@@ -55,6 +50,5 @@ class WrappedOrder extends Base
     {
         $this->redirectUrl = $redirectUrl;
     }
-
 
 }
