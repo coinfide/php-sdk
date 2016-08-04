@@ -3,7 +3,6 @@
 namespace Coinfide\Entity;
 
 use Coinfide\CoinfideException;
-use MongoDB\Driver\Exception\ConnectionException;
 
 abstract class Base
 {
@@ -175,7 +174,7 @@ abstract class Base
                 break;
             case 'boolean':
                 if ($value !== false && $value !== true) {
-                    throw new ConnectionException(sprintf('Value "%s" for field "%s" for class must be either "true" or "false"', $value, $field, get_called_class()));
+                    throw new CoinfideException(sprintf('Value "%s" for field "%s" for class must be either "true" or "false"', $value, $field, get_called_class()));
                 }
                 break;
             default:

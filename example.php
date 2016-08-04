@@ -9,6 +9,7 @@ use Coinfide\Entity\OrderItem;
 use Dotenv\Dotenv;
 
 require __DIR__ . '/vendor/autoload.php';
+
 $dotenv = new Dotenv(__DIR__);
 $dotenv->load();
 
@@ -33,6 +34,7 @@ $client->setCredentials($_ENV['COINFIDE_USER'], $_ENV['COINFIDE_PASSWORD']);
 $order = new Order();
 
 $seller = new Account();
+
 //important!! change this to your actual e-mail, or the example will not work
 $seller->setEmail('seller@coinfide.com');
 
@@ -44,6 +46,7 @@ $buyer->setEmail('buyer@coinfide.com');
 $order->setBuyer($buyer);
 
 $order->setCurrencyCode('EUR');
+$order->setExternalOrderId('external_order_id');
 
 $orderItem = new OrderItem();
 $orderItem->setType('I');
@@ -54,6 +57,9 @@ $orderItem->setQuantity(1.23);
 $order->addOrderItem($orderItem);
 
 $order->validate();
+
+//change this to reflect your local server success.php url if needed
+$order->setSuccessUrl((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/success.php');
 
 /**
  * Submit order and redirect to payment form
