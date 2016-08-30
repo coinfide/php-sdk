@@ -93,6 +93,8 @@ class SerializationTest extends \PHPUnit_Framework_TestCase
         $seller->setAddress($sellerAddress);
         $seller->setPhone($sellerPhone);
 
+        $seller->setBirthDate('19951015000000');
+
         $seller->setWebsite('http://www.example.com');
         $seller->setTaxpayerIdentificationNumber('TAX83642');
         $seller->setAdditionalInfo('Additional information for buyer');

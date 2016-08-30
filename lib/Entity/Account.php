@@ -5,11 +5,12 @@ namespace Coinfide\Entity;
 class Account extends Base
 {
     protected $validationRules = array(
-        'email' => array('type' => 'string', 'required' => true),
+        'email' => array('type' => 'string', 'required' => true, 'max_length' => 255),
         'phone' => array('type' => 'object', 'class' => '\Coinfide\Entity\Phone', 'required' => false),
         'externalUid' => array('type' => 'string', 'max_length' => 50, 'required' => false),
-        'name' => array('type' => 'string', 'max_length' => 255, 'required' => false),
-        'surname' => array('type' => 'string', 'max_length' => 255, 'required' => false),
+        'name' => array('type' => 'string', 'max_length' => 50, 'required' => false),
+        'surname' => array('type' => 'string', 'max_length' => 50, 'required' => false),
+        'birthDate' => array('type' => 'date', 'required' => false),
         'language' => array('type' => 'string', 'max_length' => 2, 'required' => false),
         'address' => array('type' => 'object', 'class' => '\Coinfide\Entity\Address', 'required' => false),
         'website' => array('type' => 'string', 'max_length' => 2048, 'required' => false),
@@ -41,6 +42,11 @@ class Account extends Base
      * @var string
      */
     protected $surname;
+
+    /**
+     * @var string
+     */
+    protected $birthDate;
 
     /**
      * @var string
@@ -145,6 +151,22 @@ class Account extends Base
     public function setSurname($surname)
     {
         $this->surname = $surname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBirthDate()
+    {
+        return $this->birthDate;
+    }
+
+    /**
+     * @param string $birthDate
+     */
+    public function setBirthDate($birthDate)
+    {
+        $this->birthDate = $birthDate;
     }
 
     /**

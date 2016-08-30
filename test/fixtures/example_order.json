@@ -16,7 +16,8 @@
       },
       "website": "http://www.example.com",
       "taxpayerIdentificationNumber": "TAX83642",
-      "additionalInfo": "Additional information for buyer"
+      "additionalInfo": "Additional information for buyer",
+      "birthDate": "19951015000000"
     },
     "buyer": {
       "email": "buyer@coinfide.com",

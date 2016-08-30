@@ -6,11 +6,11 @@ class Address extends Base
 {
     protected $validationRules = array(
         'countryCode' => array('type' => 'string', 'max_length' => 2, 'required' => true),
-        'city' => array('type' => 'string', 'max_length' => 255, 'required' => true),
-        'firstAddressLine' => array('type' => 'string', 'max_length' => 255, 'required' => true),
-        'secondAddressLine' => array('type' => 'string', 'max_length' => 255, 'required' => false),
-        'state' => array('type' => 'string', 'max_length' => 255, 'required' => false),
-        'postalCode' => array('type' => 'string', 'max_length' => 255, 'required' => false)
+        'city' => array('type' => 'string', 'max_length' => 50, 'required' => true),
+        'firstAddressLine' => array('type' => 'string', 'max_length' => 60, 'required' => true),
+        'secondAddressLine' => array('type' => 'string', 'max_length' => 60, 'required' => false),
+        'state' => array('type' => 'string', 'max_length' => 50, 'required' => false),
+        'postalCode' => array('type' => 'string', 'max_length' => 10, 'required' => true)
     );
 
     /**
