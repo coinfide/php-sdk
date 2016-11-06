@@ -4,6 +4,10 @@
 
 Require it with Composer ```composer require confide/php-sdk dev-master```.
 
+## Requirements
+
+The server should support TLS 1.2. It means OpenSSL version > 1.0.1 and Curl > 7.43, check the library versions your PHP is compiled against.
+
 ## Running
 
 Basically, all parameters are passed to ```Coinfide\Client``` constructor. Supported parameters are:
