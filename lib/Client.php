@@ -10,6 +10,8 @@ use Coinfide\Entity\WrappedOrder;
 
 class Client
 {
+    const METHODS = ['ewallet', 'bankcard', 'banktransfer', 'banklink'];
+
     /**
      * @var string
      */
@@ -250,4 +252,5 @@ class Client
 
         return $decoded;
     }
+
 }

@@ -66,4 +66,9 @@ $order->setSuccessUrl((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 
  */
 $wrappedOrder = $client->submitOrder($order);
 
+/**
+ * One of the Client::METHODS or a custom string provided by Coinfide
+ */
+//$wrappedOrder->setMethod('banklink');
+
 header('Location: '.$wrappedOrder->getRedirectUrl());

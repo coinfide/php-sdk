@@ -2471,6 +2471,11 @@ class WrappedOrder extends Base
     protected $redirectUrl;
 
     /**
+     * @var string
+     */
+    protected $method = null;
+
+    /**
      * @return Order
      */
     public function getOrder()
@@ -2491,7 +2496,7 @@ class WrappedOrder extends Base
      */
     public function getRedirectUrl()
     {
-        return $this->redirectUrl;
+        return $this->redirectUrl . ($this->method ? '&method='.$this->method : '');
     }
 
     /**
@@ -2502,6 +2507,13 @@ class WrappedOrder extends Base
         $this->redirectUrl = $redirectUrl;
     }
 
+    /**
+     * @param string $method
+     */
+    public function setMethod($method)
+    {
+        $this->method = $method;
+    }
 
 }
 }
@@ -2517,6 +2529,8 @@ use Coinfide\Entity\WrappedOrder;
 
 class Client
 {
+    const METHODS = ['ewallet', 'bankcard', 'banktransfer', 'banklink'];
+
     /**
      * @var string
      */
@@ -2757,5 +2771,6 @@ class Client
 
         return $decoded;
     }
+
 }
 }
