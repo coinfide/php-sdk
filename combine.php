@@ -9,6 +9,7 @@ $classes = [
     'Entity\Callback',
     'Entity\Order',
     'Entity\OrderItem',
+    'Entity\OrderCurrency',
     'Entity\OrderList',
     'Entity\OrderShort',
     'Entity\OrderStatus',

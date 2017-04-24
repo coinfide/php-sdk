@@ -28,7 +28,8 @@ class Order extends Base
         'successUrl' => array('type' => 'string', 'required' => false),
         'failUrl' => array('type' => 'string', 'required' => false),
         'orderItems' => array('type' => 'list', 'prototype' => array('type' => 'object', 'class' => '\Coinfide\Entity\OrderItem', 'required' => false), 'required' => true, 'min_items' => 1),
-        'shippingAddress' => array('type' => 'object', 'class' => '\Coinfide\Entity\Address', 'required' => false)
+        'shippingAddress' => array('type' => 'object', 'class' => '\Coinfide\Entity\Address', 'required' => false),
+        'availableCurrencyList' => array('type' => 'list', 'prototype' => array('type' => 'object', 'class' => '\Coinfide\Entity\OrderCurrency', 'required' => false), 'required' => false, 'min_items' => 1)
     );
 
     /**
@@ -150,6 +151,11 @@ class Order extends Base
      * @var Address
      */
     protected $shippingAddress;
+
+    /**
+     * @var OrderCurrency[]
+     */
+    protected $availableCurrencyList;
     
     /**
      * @return string
@@ -541,5 +547,29 @@ class Order extends Base
     public function setShippingAddress($shippingAddress)
     {
         $this->shippingAddress = $shippingAddress;
+    }
+
+    /**
+     * @return OrderCurrency[]
+     */
+    public function getAvailableCurrencyList()
+    {
+        return $this->availableCurrencyList;
+    }
+
+    /**
+     * @param OrderCurrency[] $availableCurrencyList
+     */
+    public function setAvailableCurrencyList($availableCurrencyList)
+    {
+        $this->availableCurrencyList = $availableCurrencyList;
+    }
+
+    /**
+     * @param OrderCurrency $orderCurrency
+     */
+    public function addAvailableCurrency($orderCurrency)
+    {
+        $this->availableCurrencyList[] = $orderCurrency;
     }
 }

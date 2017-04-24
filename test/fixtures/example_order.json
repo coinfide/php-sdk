@@ -89,6 +89,11 @@
       "secondAddressLine": "Fl.2, Hortana Court",
       "state": "South",
       "postalCode": "MSK2100"
-    }
+    },
+    "availableCurrencyList": [{
+      "currencyCode": "EUR",
+      "rate": 1.00,
+      "amount": 21.00
+    }]
   }
 }

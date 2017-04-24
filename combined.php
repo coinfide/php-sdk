@@ -950,7 +950,8 @@ class Order extends Base
         'successUrl' => array('type' => 'string', 'required' => false),
         'failUrl' => array('type' => 'string', 'required' => false),
         'orderItems' => array('type' => 'list', 'prototype' => array('type' => 'object', 'class' => '\Coinfide\Entity\OrderItem', 'required' => false), 'required' => true, 'min_items' => 1),
-        'shippingAddress' => array('type' => 'object', 'class' => '\Coinfide\Entity\Address', 'required' => false)
+        'shippingAddress' => array('type' => 'object', 'class' => '\Coinfide\Entity\Address', 'required' => false),
+        'availableCurrencyList' => array('type' => 'list', 'prototype' => array('type' => 'object', 'class' => '\Coinfide\Entity\OrderCurrency', 'required' => false), 'required' => false, 'min_items' => 1)
     );
 
     /**
@@ -1072,6 +1073,11 @@ class Order extends Base
      * @var Address
      */
     protected $shippingAddress;
+
+    /**
+     * @var OrderCurrency[]
+     */
+    protected $availableCurrencyList;
     
     /**
      * @return string
@@ -1464,6 +1470,30 @@ class Order extends Base
     {
         $this->shippingAddress = $shippingAddress;
     }
+
+    /**
+     * @return OrderCurrency[]
+     */
+    public function getAvailableCurrencyList()
+    {
+        return $this->availableCurrencyList;
+    }
+
+    /**
+     * @param OrderCurrency[] $availableCurrencyList
+     */
+    public function setAvailableCurrencyList($availableCurrencyList)
+    {
+        $this->availableCurrencyList = $availableCurrencyList;
+    }
+
+    /**
+     * @param OrderCurrency $orderCurrency
+     */
+    public function addAvailableCurrency($orderCurrency)
+    {
+        $this->availableCurrencyList[] = $orderCurrency;
+    }
 }
 }
 
@@ -1661,6 +1691,93 @@ class OrderItem extends Base
     public function setTax($tax)
     {
         $this->tax = $tax;
+    }
+}
+}
+
+
+namespace  Coinfide\Entity {
+
+class OrderCurrency extends Base
+{
+    protected $validationRules = array(
+        'currencyCode' => array('type' => 'string', 'min_length' => 3, 'max_length' => 3, 'required' => true),
+        'rate' => array('type' => 'decimal', 'digits' => 3, 'precision' => 3, 'required' => false),
+        'amount' => array('type' => 'decimal', 'digits' => 14, 'precision' => 2, 'required' => false)
+    );
+
+    /**
+     * @var string
+     */
+    protected $currencyCode;
+
+    /**
+     * @var float
+     */
+    protected $rate;
+
+    /**
+     * @var float
+     */
+    protected $amount;
+
+    /**
+     * OrderCurrency constructor.
+     * @param string|null $currencyCode
+     */
+    public function __construct($currencyCode = null)
+    {
+        if ($currencyCode !== null) {
+            $this->currencyCode = $currencyCode;
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currencyCode;
+    }
+
+    /**
+     * @param string $currencyCode
+     */
+    public function setCurrencyCode($currencyCode)
+    {
+        $this->currencyCode = $currencyCode;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRate()
+    {
+        return $this->rate;
+    }
+
+    /**
+     * @param float $rate
+     */
+    public function setRate($rate)
+    {
+        $this->rate = $rate;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param float $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
     }
 }
 }

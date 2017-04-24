@@ -7,6 +7,7 @@ use Coinfide\Entity\Address;
 use Coinfide\Entity\AffiliateInfo;
 use Coinfide\Entity\Callback;
 use Coinfide\Entity\Order;
+use Coinfide\Entity\OrderCurrency;
 use Coinfide\Entity\OrderItem;
 use Coinfide\Entity\Phone;
 use Coinfide\Entity\Tax;
@@ -194,6 +195,13 @@ class SerializationTest extends \PHPUnit_Framework_TestCase
         $shippingAddress->setPostalCode('MSK2100');
 
         $order->setShippingAddress($shippingAddress);
+
+        $orderCurrency = new OrderCurrency();
+        $orderCurrency->setCurrencyCode('EUR');
+        $orderCurrency->setRate(1.00);
+        $orderCurrency->setAmount(21.00);
+
+        $order->addAvailableCurrency($orderCurrency);
 
         $this->assertEquals($json, array('order' => $order->toArray()));
     }
