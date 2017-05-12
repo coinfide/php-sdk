@@ -168,11 +168,11 @@ class Client
         return $wrappedOrder;
     }
 
-    public function refund($orderUid, $amount, $comment = null)
+    public function refund($uid, $amount, $comment = null)
     {
         $token = $this->getToken();
 
-        $data = array('uid' => $orderUid, 'amount' => $amount);
+        $data = array('uid' => $uid, 'amount' => $amount);
         if ($comment) {
             $data['comment'] = $comment;
         }
