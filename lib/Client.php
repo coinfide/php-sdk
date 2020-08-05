@@ -54,7 +54,7 @@ class Client
     public function setMode($mode)
     {
         if ($mode == 'demo') {
-            $this->endpoint = 'https://demo-paymentapi.coinfide.com/paymentapi/';
+            $this->endpoint = 'https://alpha.enauda.com/paymentapi/';
         } elseif ($mode == 'prod') {
             $this->endpoint = 'https://paymentapi.coinfide.com/paymentapi/';
         } else {
